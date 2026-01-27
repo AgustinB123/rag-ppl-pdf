@@ -1,0 +1,50 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+venv/
+env/
+ENV/
+.venv
+pip-log.txt
+pip-delete-this-directory.txt
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Environment variables
+.env
+.env.local
+
+# ChromaDB
+data/index/
+backend/data/index/
+backend/data/ingested_docs.json
+
+# PDFs y documentos (agregar solo README.txt como ejemplo)
+backend/data/pdf/*.pdf
+backend/data/pdf/*.html
+backend/data/pdf/*.htm
+!backend/data/pdf/README.txt
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Frontend
+node_modules/
+dist/
+.npm
+.eslintcache

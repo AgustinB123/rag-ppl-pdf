@@ -1,0 +1,58 @@
+.input-box {
+  display: flex;
+  gap: 10px;
+  padding: 15px;
+  background-color: #2d2d2d;
+  border-top: 1px solid #3a3a3a;
+  align-items: center;
+}
+
+.input-textarea {
+  flex: 1;
+  background-color: #1a1a1a;
+  border: 1px solid #3a3a3a;
+  border-radius: 8px;
+  padding: 12px;
+  color: #e0e0e0;
+  font-size: 14px;
+  font-family: inherit;
+  resize: none;
+  min-height: 44px;
+  max-height: 120px;
+  overflow-y: auto;
+}
+
+.input-textarea:focus {
+  outline: none;
+  border-color: #4a9eff;
+}
+
+.input-textarea:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.input-textarea::placeholder {
+  color: #666;
+}
+
+.send-button {
+  background-color: #4a9eff;
+  border: none;
+  border-radius: 8px;
+  padding: 12px 20px;
+  font-size: 20px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  min-width: 60px;
+}
+
+.send-button:hover:not(:disabled) {
+  background-color: #3a8eef;
+}
+
+.send-button:disabled {
+  background-color: #3a3a3a;
+  cursor: not-allowed;
+  opacity: 0.5;
+}
