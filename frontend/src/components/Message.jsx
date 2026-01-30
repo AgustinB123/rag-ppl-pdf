@@ -19,7 +19,13 @@ function Message({ message }) {
         <div className="message-sources">
           <span className="sources-icon">📄</span>
           <span className="sources-text">
-            Fuentes: {message.sources.map(s => `Página ${s.page}`).join(', ')}
+            Fuentes: {message.sources.map(s => {
+              if (s.type === 'pdf') {
+                return `${s.source} (Pág. ${s.page})`
+              } else {
+                return s.source
+              }
+            }).join(', ')}
           </span>
         </div>
       )}

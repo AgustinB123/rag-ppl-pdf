@@ -20,12 +20,20 @@ def build_rag_prompt(
     Returns:
         Prompt formateado para Claude
     """
-    # Construir contexto agregando información de páginas
+    # Construir contexto agregando información de fuente
     context_parts = []
     for i, chunk in enumerate(context_chunks, 1):
         text = chunk.get("text", "")
-        page = chunk.get("metadata", {}).get("page", "N/A")
-        context_parts.append(f"[Fragmento {i} - Página {page}]\n{text}")
+        metadata = chunk.get("metadata", {})
+        source = metadata.get("source", "N/A")
+        page = metadata.get("page", "N/A")
+        doc_type = metadata.get("type", "pdf")
+        
+        # Mostrar fuente apropiada según el tipo de documento
+        if doc_type in ["text", "html"]:
+            context_parts.append(f"[Fragmento {i} - Archivo: {source}]\n{text}")
+        else:
+            context_parts.append(f"[Fragmento {i} - Archivo: {source}, Página {page}]\n{text}")
     
     context = "\n\n".join(context_parts)
     
@@ -39,18 +47,19 @@ def build_rag_prompt(
         history_text = "\n\nHistorial de conversación reciente:\n" + "\n".join(history_parts)
     
     # Prompt con instrucciones estrictas anti-alucinación
-    prompt = f"""Eres un asistente experto en el manual FPA Portfolio.
+    prompt = f"""Eres un asistente experto en documentación técnica de FPA (manuales, wiki interna, guías).
 
 REGLAS ESTRICTAS:
-1. SOLO responde basándote en el contexto proporcionado del manual
-2. Si la información NO está en el contexto, responde: "No encuentro información sobre eso en el manual"
+1. SOLO responde basándote en el contexto proporcionado de los documentos
+2. Si la información NO está en el contexto, responde: "No encuentro información sobre eso en la documentación"
 3. NO inventes, supongas o extrapoles información
 4. Si hay información parcial, indícalo claramente
-5. Cita las páginas cuando sea relevante
+5. Cita las FUENTES (archivos/páginas) cuando sea relevante para dar credibilidad
 6. Sé conciso pero completo en tus respuestas
 7. Puedes referirte a la conversación previa si es relevante para dar continuidad
+8. Si la información viene de la wiki, menciona "según la wiki" o "de acuerdo a la documentación wiki"
 
-Contexto del manual:
+Contexto de los documentos:
 {context}{history_text}
 
 Pregunta actual del usuario:

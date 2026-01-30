@@ -1,0 +1,523 @@
+<!--
+title: Grillas PPL GridDefinition
+description: Caso base de informe generador de grilla
+published: true
+date: 2025-12-22T13:17:07.885Z
+tags: v7, grilla, grillas, informe, handsontable, tablas
+editor: ckeditor
+dateCreated: 2025-11-25T15:09:42.127Z
+-->
+
+<p>1. Caso base: Informe PPL V6</p>
+<p>Podemos suponer un informe “caso base grilla” con datos mockeados solo para poder inspeccionarlo, como el sisguiente.&nbsp;</p>
+<pre><code class="language-c">*FUENTES CREADAS*
+CrearFont(1,'Arial,10,B,S')
+CrearFont(2,'Arial,8,B')
+AgregarBMP(a1,Exe('LOGO'))
+
+
+*AJUSTES DE ANCHO DE COLUMNAS *
+ACO(1,10)
+ACO(3,12)
+ACO(4,40)
+ACO(6,5)
+
+*AJUSTES DE LARGO DE FILAS *
+AFI(2, 30)
+AFI(9, 30)
+
+*TITULO*
+ACT(d2, 'Listado de Especies')
+
+*DESCRIPCCION/VALORES DE DIALOGO*
+ACT(a3,'Listado de especies emitidas en un rango de fecha')
+ACT(a4, 'Fecha desde: ')
+ACD(b4, 06/11/2020 )
+ACT(a5, 'Fecha hasta: ')
+ACD(b5, 17/11/2025 )
+ACT(a6,('Cotizaciones') )
+ACT(b6,'EURO|USD|' )
+
+*ENCABEZADO DE TABLA*
+ACT(a9, 'Jerarquia')
+ACT(b9, 'Codigo')
+ACT(c9, 'Estado')
+ACT(d9, 'Nombre')
+ACT(e9, 'FEmision')
+ACT(f9, 'Cupon')
+ACT(g9, 'Precio')
+
+*DATOS MOCKEADOS*
+ACT(a10, '002010022000000')
+ACT(a11, '002010022000000')
+ACT(a12, '002010022000000')
+
+ACT(b10, 'AL33')
+ACT(b11, 'BRAEI')
+ACT(b12, 'LETE95')
+
+ACT(c10, 'Pendiente')
+ColorCeldas(c10, RGB(255,0,0))
+ACT(c11, 'Pendiente')
+ColorCeldas(c:11, RGB(255,0,0))
+ACT(c12, 'Procesado')
+ColorCeldas(c12, RGB(0,128,0))
+
+ACT(d12, 'AL30  003000D Eur1')
+ACT(d10, 'EI BRASIL VTO. 15/04/2006 FLOAT')
+ACT(d11, 'Letras del tesoro en d¢lares vto 28/09/01')
+
+ACD(e10, 01/06/2022)
+ACD(e11, 19/12/2022)
+ACD(e12, 29/05/2023)
+
+
+ACN(f10, 15)
+ACN(f11, 12)
+ACN(f12, 0)
+
+ACN(g10, 6000245)
+ACN(g11, 800241)
+ACN(g12, -900241)
+
+
+ACT(a13, 'FIN DEL LISTADO')
+
+*ESTILOS DE LA TABLA*
+SetFilaActual(9)
+AlinearCeldas(d:2,'C')
+AlinearCeldas(a:9..G:9,'C')
+AgregarMarco(a:9..G:9,2,1,RGB(255,255,0))
+SetFont(D:2,1) 
+SetFont(a:9..G:9,2) 
+AgregarMarco(a:10..G:12,0,0)
+FormatoCeldas(F:2..F:20, '0')
+FormatoCeldas(G:2..G:20, '0,000')
+Impresion(1,2)
+limitesvision(G:14)
+
+*FORMATO DE IMPRESION*
+Impresion(1,2)
+*Selector 1 para Orientación, Valores 1 para Portrait(mas alto que ancho), 2 para Landscape; 
+Impresion(2,1)
+*Selector 2 para poner Fecha y Hora en el informe. 1 las pone, 0 las saca.
+Impresion(3,1)
+*Selector 3 para poner numerar las páginas en el informe. 1 lo pone, 0 lo saca.
+Impresion(4,1) 
+*Selector 4 para poner el Codigo del Informe en las paginas en el informe. 1 pone, 0 saca.
+Impresion(5,'A5') 
+*Selector 5 para poner el tamaño de hoja a utilizar. Por ej: Impresión(5, ‘A5’) Ej: Impresión(3, 0) (Para evitar ver los números de página)
+</code></pre>
+<figure class="image"><img src="/tablas/nuevagrilla.png"></figure>
+<p>2. El siguiente es un JSON generado a partir del informe en PPL anterior.</p>
+<pre><code class="language-xml">{
+  "gridDefinition": {
+    "fonts": {
+      "1": {
+        "family": "Arial",
+        "size": 10,
+        "bold": true,
+        "underline": true,
+        "italic": false
+      },
+      "2": {
+        "family": "Arial",
+        "size": 8,
+        "bold": true
+      }
+    },
+    "columnWidths": {
+      "A": 90,
+      "C": 120,
+      "D": 250,
+      "F": 50
+    },
+    "rowHeights": {
+      "2": 100,
+      "9": 200
+    },
+    "values": {
+      "2": {
+        "D": "Listado de Especies"
+      },
+      "3": {
+        "A": "Listado de especies emitidas en un rango de fecha"
+      },
+      "4": {
+        "A": "Fecha desde:",
+        "B": "2020-11-06"
+      },
+      "5": {
+        "A": "Fecha hasta:",
+        "B": "2025-11-17"
+      },
+      "6": {
+        "A": "Cotizaciones",
+        "B": "EURO|USD|"
+      },
+      "9": {
+        "A": "Jerarquia",
+        "B": "Codigo",
+        "C": "Estado",
+        "D": "Nombre",
+        "E": "FEmision",
+        "F": "Cupon",
+        "G": "Precio"
+      },
+      "10": {
+        "A": "002010022000000",
+        "B": "AL33",
+        "C": "Pendiente",
+        "D": "EI BRASIL VTO. 15/04/2006 FLOAT",
+        "E": "2022-06-01",
+        "F": 15,
+        "G": 6000245
+      },
+      "11": {
+        "A": "002010022000000",
+        "B": "BRAEI",
+        "C": "Pendiente",
+        "D": "Letras del tesoro en dólares vto 28/09/01",
+        "E": "2022-12-19",
+        "F": 12,
+        "G": 800241
+      },
+      "12": {
+        "A": "002010022000000",
+        "B": "LETE95",
+        "C": "Procesado",
+        "D": "AL30 003000D Eur1",
+        "E": "2023-05-29",
+        "F": 0,
+        "G": -900241
+      },
+      "13": {
+        "A": "FIN DEL LISTADO"
+      }
+    },
+    "cellFonts": [
+      {
+        "range": {
+          "from": "D2",
+          "to": "D2"
+        },
+        "fontId": 1
+      },
+      {
+        "range": {
+          "from": "A9",
+          "to": "G9"
+        },
+        "fontId": 2
+      }
+    ],
+    "cellFormats": [
+      {
+        "range": {
+          "from": "F10",
+          "to": "F20"
+        },
+        "format": "0"
+      },
+      {
+        "range": {
+          "from": "G10",
+          "to": "G20"
+        },
+        "format": "0,000"
+      }
+    ],
+    "cellBorders": [
+      {
+        "range": {
+          "from": "A9",
+          "to": "G9"
+        },
+        "weight": "N",
+        "gridType": 1,
+        "backgroundColor": "RGB(255,255,0)"
+      },
+      {
+        "range": {
+          "from": "A10",
+          "to": "G10"
+        },
+        "weight": "1",
+        "gridType": 2,
+        "backgroundColor": "black"
+      }
+    ],
+    "cellAlignments": [
+      {
+        "range": {
+          "from": "D2",
+          "to": "D2"
+        },
+        "align": "C"
+      },
+      {
+        "range": {
+          "from": "A9",
+          "to": "G9"
+        },
+        "align": "C"
+      },
+      {
+        "range": {
+          "from": "A3",
+          "to": "A6 "
+        },
+        "align": "I"
+      },
+      {
+        "range": {
+          "from": "C7",
+          "to": "D10"
+        },
+        "align": "C"
+      }
+    ],
+    "mergedCells": [
+      {
+        "range": {
+          "from": "C7",
+          "to": "D10"
+        },
+        "whiteSpace": "pre-wrap"
+      }
+    ],
+    "options": {
+      "autoFit": false,
+      "viewLimit": "G13",
+      "showGridLines": true,
+      "allowFilters": true,
+      "allowSort": true,
+      "allowExport": true,
+      "negativeColoring": true,
+      "locale": "es-AR",
+      "print": {
+        "orientation": "portrait",
+        "showDateTime": true,
+        "showPageNumbers": false,
+        "showReportCode": true,
+        "paperSize": "A5"
+      }
+    }
+  }
+}</code></pre>
+<p>&nbsp;</p>
+<p>3. Para poder generar estas grillas en V7 aremos uso de Handsontable, un componente de cuadrícula de datos para JavaScript que proporciona la interfaz y las funcionalidades de una hoja de cálculo, como las de Excel.</p>
+<ul>
+  <li>Algunos recursos para aprender HandsOnTable:<ul>
+      <li><a href="https://handsontable.com/">https://handsontable.com/</a></li>
+      <li><a href="https://www.youtube.com/watch?v=5PUgMKOHGJw&amp;list=PLSuKjujFoGJ1Dek9DgJsLkrsqGccDDSyG">https://www.youtube.com/watch?v=5PUgMKOHGJw&amp;list=PLSuKjujFoGJ1Dek9DgJsLkrsqGccDDSyG</a></li>
+      <li><a href="https://www.npmjs.com/package/@handsontable/react">https://www.npmjs.com/package/@handsontable/react</a></li>
+    </ul>
+  </li>
+</ul>
+<p>4. La estructura para llevarlo a V7 es la siguiente:&nbsp;</p>
+<figure class="table">
+  <table>
+    <tbody>
+      <tr>
+        <td style="background-color:hsl(0, 0%, 60%);border-bottom:solid hsl(0, 0%, 30%);border-left:solid hsl(0, 0%, 30%);border-right:solid hsl(0, 0%, 30%);border-top:solid hsl(0, 0%, 30%);">Componente&nbsp;</td>
+        <td style="background-color:hsl(0, 0%, 60%);border-bottom:solid hsl(0, 0%, 30%);border-left:solid hsl(0, 0%, 30%);border-right:solid hsl(0, 0%, 30%);border-top:solid hsl(0, 0%, 30%);">Descripción</td>
+      </tr>
+      <tr>
+        <td>components/ppl-grid/PPLGrid.tsx</td>
+        <td>componente cliente que instancia HotTable, registra los módulos de Handsontable y aplica metadatos para resaltar filas o celdas antes de renderizar (registerAllModules, hotRef, setCellMeta). Es el núcleo de la integración con la tabla interactiva.</td>
+      </tr>
+      <tr>
+        <td>components/ppl-grid/index.ts</td>
+        <td>
+          <p>index.ts : re-export sencillo para consumir PPLGrid desde otros módulos sin importar directamente el archivo interno.</p>
+          <p>&nbsp;</p>
+        </td>
+      </tr>
+      <tr>
+        <td>app/pruebas/page.tsx:&nbsp;</td>
+        <td>página de demo que monta PPLGrid, arma la definición de datos desde los mocks y ofrece herramientas de exportación para probar el grid Handsontable en el entorno Next.js.</td>
+      </tr>
+      <tr>
+        <td>styles/handsontable-custom.css</td>
+        <td>define las clases que Handsontable usa como metadatos (fila-resaltada, borde-azul, etc.) para colorear celdas, además de ajustar el z-index de la tabla para convivir con otros overlays.</td>
+      </tr>
+      <tr>
+        <td>__mocks__/grid-def-output.ts</td>
+        <td>mock que importa el CSS anterior y fabrica una GridDefinitionOutput con valores, metadatos de columnas, filas resaltadas y clases de borde; útil para probar Handsontable sin backend.</td>
+      </tr>
+      <tr>
+        <td>lib/types/grid-def-output.ts</td>
+        <td>describe el shape del objeto que se pasa a HotTable (valores, columnas, filas resaltadas y bordes). Garantiza tipado consistente en todo el código que interactúa con Handsontable.</td>
+      </tr>
+    </tbody>
+  </table>
+</figure>
+<figure class="table">
+  <table>
+    <tbody>
+      <tr>
+        <td>lib/types/grid-def-output.ts</td>
+        <td>Define el <i>modelo estándar</i> que representa cualquier informe PPL. Soporta ACT, ACD, ACN, AlinearCeldas, ColorCeldas, CrearFont, SetFont, AgregarMarco, FormatoCeldas. Es el contrato entre backend y frontend.</td>
+      </tr>
+      <tr>
+        <td><strong>mocks</strong>/grid-def-output.ts</td>
+        <td>Mock que construye un GridDefinitionOutput realista basado en un informe PPL. Permite renderizar la grilla sin backend. Se usa en <code>/test/grid </code>. (que es la page de pruebas que estamos usando)</td>
+      </tr>
+      <tr>
+        <td>components/ppl-grid/PPLGrid.tsx</td>
+        <td>Componente cliente que traduce GridDefinitionOutput → settings de Handsontable. Instancia HotTable, registra módulos, aplica metadata (ancho, tipo, formato, estilos). Es el núcleo de la integración con la tabla.</td>
+      </tr>
+      <tr>
+        <td>styles/handsontable-custom.css</td>
+        <td>Define clases de estilo propias usadas por Handsontable (header amarillo, bordes, prioridades de z-index). Permite personalización visual al estilo PPL.</td>
+      </tr>
+      <tr>
+        <td>app/test/grid/page.tsx</td>
+        <td>Página de demo que monta PPLGrid usando los mocks, para probar interacción, formatos, estilos y comportamiento de la tabla dentro de Next.js. Es el entorno de pruebas del módulo.</td>
+      </tr>
+    </tbody>
+  </table>
+</figure>
+<p>5_ El grid-def-output.ts que incluye todos las funciones y estilos que podemos ocupar para las tablas de PPL llevado a web.&nbsp;</p>
+<pre><code class="language-typescript">// lib/types/grid-def-output.ts
+// -------------------------------------------------------------
+// Define el modelo estándar (GridDefinitionOutput) que usa PPLGrid
+// para renderizar cualquier informe PPL en Handsontable.
+// Refleja funciones PPL: ACT, ACD, ACN, AlinearCeldas, ColorCeldas,
+// CrearFont, SetFont, AgregarMarco, ACO, FormatoCeldas, LimiteVision.
+// -------------------------------------------------------------
+
+type CellAddress = string // Ej: "A1", "C10", etc.
+
+// Rango equivalente a A:9..G:9
+interface CellRange {
+  from: CellAddress
+  to: CellAddress
+}
+
+type BorderWeight = "1" | "N"
+
+type BorderGridType = 0 | 1 | 2 | 3
+
+// AlinearCeldas → left, center, right
+type HorizontalAlign = "D" | "I" | "C"
+
+// Valores posibles dentro de la tabla
+type CellValue = string | number | Date | null
+
+type WhiteSpace = "normal" | "nowrap" | "pre" | "pre-line" | "pre-wrap" | "break-spaces"
+
+type ColumnWidth = number
+
+type RowHeight = number
+// -------------------------------------------------------------
+// Fuentes (CrearFont / SetFont)
+// -------------------------------------------------------------
+interface FontsDefinition {
+  [id: number]: FontDefinition
+}
+
+interface FontDefinition {
+  family?: string
+  size?: number
+  bold?: boolean
+  underline?: boolean
+  italic?: boolean
+}
+
+// -------------------------------------------------------------
+// Ancho de columnas (ACO)
+// -------------------------------------------------------------
+interface ColumnWidthsDefinition {
+  [column: string]: ColumnWidth
+}
+
+// -------------------------------------------------------------
+// Alto de filas (AFI)
+// -------------------------------------------------------------
+interface RowHeightsDefinition {
+  [row: number]: RowHeight
+}
+
+interface CellValuesDefinition {
+  [row: string]: CellValueDefinition
+}
+
+interface CellValueDefinition {
+  [column: string]: CellValue
+}
+// -------------------------------------------------------------
+// Estilos PPL de rango
+// -------------------------------------------------------------
+interface CellFontDefinition {
+  range: CellRange
+  fontId: number
+}
+
+interface CellFormatDefinition {
+  range: CellRange
+  format: string
+}
+
+interface CellBorderDefinition {
+  range: CellRange
+  weight?: BorderWeight
+  gridType?: BorderGridType
+  backgroundColor?: string
+}
+
+interface CellAlignmentDefinition {
+  range: CellRange
+  align: HorizontalAlign
+}
+
+interface MergedCellsDefinition {
+  range: CellRange
+  whiteSpace: WhiteSpace
+}
+
+//opciones de estilos para imprimir
+interface PrintOptions {
+  orientation?: "portrait" | "landscape"
+  showDateTime?: boolean
+  showPageNumbers?: boolean
+  showReportCode?: boolean
+  paperSize?: string
+}
+
+interface OptionsDefinition {
+  autoFit?: boolean
+  viewLimit?: CellAddress
+  showGridLines?: boolean
+  allowFilters?: boolean
+  allowSort?: boolean
+  allowExport?: boolean
+  negativeColoring?: boolean
+  locale?: string
+  print?: PrintOptions
+  titleRange?: string
+  fixedCol?: string
+  fixedRow?: number
+}
+
+// -------------------------------------------------------------
+// Objeto final listo para PPLGrid
+// -------------------------------------------------------------
+export interface GridDefinitionOutput {
+  fonts: FontsDefinition
+  columnWidths: ColumnWidthsDefinition
+  rowHeights: RowHeightsDefinition
+  values: CellValuesDefinition
+  cellFonts?: CellFontDefinition[]
+  cellFormats?: CellFormatDefinition[]
+  cellBorders?: CellBorderDefinition[]
+  cellAlignments?: CellAlignmentDefinition[]
+  mergedCells?: MergedCellsDefinition[]
+  options?: OptionsDefinition
+}
+</code></pre>
+<p>&nbsp;</p>
+<p>6_ En la imagen adjunta abajo podemos apreciar como queda esta tabla de prueba en la versión web.&nbsp;</p>
+<figure class="image"><img src="/tablas/captura_de_pantalla_2025-12-22_101327.png"></figure>
+<p>&nbsp;</p>

@@ -1,0 +1,9 @@
+ALTER TABLE dbo.EVENTOS add HashHeader CHAR(40), HashScript CHAR(40);
+ALTER TABLE dbo.INFORMES add HashHeader CHAR(40), HashScript CHAR(40);
+ALTER TABLE dbo.ABMS add HashHeader CHAR(40), HashScript CHAR(40);
+ALTER TABLE dbo.TIPOSOPERACION add HashHeader CHAR(40), HashScript CHAR(40);
+ALTER TABLE dbo.TIPOSTRANSACCION2 add HashHeader CHAR(40), HashScript CHAR(40);
+ALTER TABLE dbo.TIPOSORDEN add HashHeader CHAR(40), HashScript CHAR(40);
+ALTER TABLE dbo.TIPOSMINUTABOLSA add HashHeader CHAR(40), HashScript CHAR(40);
+ALTER TABLE dbo.FORMULAS add HashHeader CHAR(40), HashScript CHAR(40);
+ALTER TABLE dbo.FUNCIONES add HashHeader CHAR(40), HashScript CHAR(40);

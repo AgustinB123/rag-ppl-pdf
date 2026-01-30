@@ -93,17 +93,27 @@ class RAGQueryPipeline:
         
         # 6. Estructurar respuesta con fuentes
         sources = []
-        seen_pages = set()
+        seen_sources = set()
         
         for chunk in context_chunks:
-            page = chunk["metadata"].get("page")
-            if page and page not in seen_pages:
-                sources.append({
-                    "page": page,
+            metadata = chunk["metadata"]
+            source = metadata.get("source", "N/A")
+            page = metadata.get("page", "N/A")
+            doc_type = metadata.get("type", "pdf")
+            
+            # Crear identificador único para evitar duplicados
+            source_id = f"{source}_{page}"
+            
+            if source_id not in seen_sources:
+                source_info = {
+                    "page": page if doc_type == "pdf" else None,
+                    "source": source,
+                    "type": doc_type,
                     "text": chunk["text"][:200] + "...",  # Snippet
                     "score": round(chunk["score"], 2)
-                })
-                seen_pages.add(page)
+                }
+                sources.append(source_info)
+                seen_sources.add(source_id)
         
         # Ordenar fuentes por score
         sources.sort(key=lambda x: x["score"], reverse=True)

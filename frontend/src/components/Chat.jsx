@@ -51,7 +51,7 @@ function Chat() {
         },
         body: JSON.stringify({
           question: question,
-          top_k: 5,
+          top_k: 10,  // Aumentado para mejor cobertura de múltiples fuentes
           conversation_history: conversationHistory.length > 0 ? conversationHistory : null
         })
       })

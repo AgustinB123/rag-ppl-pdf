@@ -1,0 +1,22 @@
+def abm 'operaciones'
+	def grid 
+		NrOperacion:, Cantidad:, Precio1:, TotalBrutoCli1: 
+	end
+
+	def key 
+		NrOperacion:
+	end
+
+	def dialog
+		tab 'General'
+			column
+				NrOperacion:
+				Cantidad:, ,numeric
+				Precio1:, 'Precio', numeric
+				TotalBrutoCli1:,'Importe', numeric
+	end
+
+	when_change:
+		Cantidad:, Precio1:,
+			 $.set_field(TotalBrutoCli1:, val(Cantidad:) * val(Precio1:))
+end

@@ -1,0 +1,36 @@
+def abm 'Clientes'  	  
+	def grid
+		# Campos que quiero mostrar en la grilla.
+		Jerarquia:, Codigo:, RazonSocial:
+	end
+	
+	def key
+		# Campo clave de la tabla.
+		Codigo:
+	end
+	
+	def dialog
+		#Solapa General.
+		tab 'General'		
+			# Columna 1.
+			column
+				#fila 1
+				Jerarquia:,,large_text
+				#fila 2
+				Codigo:,,small_text   
+				#etc...
+				NrCuenta:  
+				RazonSocial:, 'Razon Social'  , extra_large_text
+				Direccion:  , 'Direccion'     , large_text
+				Localidad:  ,,large_text
+				CodigoPostal:, 'Codigo Postal', small_text
+				Provincia:,                   , extra_large_text							
+				Pais:,,autocomplete,'Paises','Codigo, Nombre' #,'Codigo' 
+				Telefono:
+				Fax:
+				Limite:,'Limite Credito'
+			#Columna 2.
+			column
+				Status:,,combo,"HAB:Habilitado| DES:Deshabilitado"
+	end		
+end

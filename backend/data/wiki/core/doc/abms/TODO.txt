@@ -1,0 +1,8 @@
+[TODO: ejemplo import_lib, import_type]
+[TODO: ejemplo utilizando funciones ppl]
+[TODO: ejemplo utilizando helpers, multiples llamadas al mismo helper ‘;’]
+[TODO: ejemplo utilizando plugins]
+[TODO: ejemplo object literals]
+
+
+

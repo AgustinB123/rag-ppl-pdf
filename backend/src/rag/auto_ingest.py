@@ -67,30 +67,40 @@ class AutoIngester:
     
     SUPPORTED_EXTENSIONS = ['.pdf', '.html', '.htm', '.txt', '.md']
     
-    def __init__(self, data_dir: str = "./data/pdf"):
-        self.data_dir = data_dir
+    def __init__(self, data_dirs: List[str] = None):
+        # Por defecto busca en data/pdf Y data/wiki
+        if data_dirs is None:
+            data_dirs = ["./data/pdf", "./data/wiki"]
+        self.data_dirs = data_dirs
         self.tracker = DocumentHashTracker()
     
     def find_documents(self) -> List[str]:
         """
-        Encuentra todos los documentos soportados en el directorio de datos
+        Encuentra RECURSIVAMENTE todos los documentos soportados en MÚLTIPLES directorios
+        (data/pdf/ y data/wiki/ con todas sus subcarpetas anidadas)
         
         Returns:
             Lista de rutas a documentos
         """
         documents = []
-        data_path = Path(self.data_dir)
         
-        if not data_path.exists():
-            logger.warning(f"Directorio no existe: {self.data_dir}")
-            return documents
+        # Buscar en cada directorio configurado
+        for data_dir in self.data_dirs:
+            data_path = Path(data_dir)
+            
+            if not data_path.exists():
+                logger.warning(f"Directorio no existe: {data_dir}")
+                continue
+            
+            # Buscar recursivamente en todas las subcarpetas (**)
+            for ext in self.SUPPORTED_EXTENSIONS:
+                for file_path in data_path.rglob(f"*{ext}"):
+                    if file_path.is_file():
+                        documents.append(str(file_path))
+            
+            logger.info(f"📂 Buscando en {data_dir}...")
         
-        for ext in self.SUPPORTED_EXTENSIONS:
-            for file_path in data_path.glob(f"*{ext}"):
-                if file_path.is_file():
-                    documents.append(str(file_path))
-        
-        logger.info(f"Encontrados {len(documents)} documentos en {self.data_dir}")
+        logger.info(f"✅ Encontrados {len(documents)} documentos totales (recursivo en {len(self.data_dirs)} directorios)")
         return documents
     
     def get_new_documents(self) -> List[str]:
@@ -121,8 +131,11 @@ class AutoIngester:
             Resultado de la ingesta
         """
         ext = Path(file_path).suffix.lower()
+        file_name = Path(file_path).name
         
         try:
+            logger.info(f"Procesando: {file_path}")
+            
             if ext == '.pdf':
                 result = ingest_pipeline.ingest_pdf(file_path)
             elif ext in ['.html', '.htm']:
@@ -135,20 +148,21 @@ class AutoIngester:
             # Marcar como ingestado si fue exitoso
             if result.get("status") == "success":
                 self.tracker.mark_as_ingested(file_path)
+                logger.info(f"✅ {file_name}: {result.get('chunks')} chunks procesados")
             
             return result
             
         except Exception as e:
-            logger.error(f"Error ingesting {file_path}: {e}")
+            logger.error(f"❌ Error procesando {file_name}: {e}")
             return {
                 "status": "error",
-                "source": os.path.basename(file_path),
+                "source": file_name,
                 "error": str(e)
             }
     
     def auto_ingest_all(self, ingest_pipeline) -> Dict[str, Any]:
         """
-        Ingesta automáticamente todos los documentos nuevos
+        Ingesta automáticamente todos los documentos nuevos (recursivamente)
         
         Args:
             ingest_pipeline: Pipeline de ingesta
@@ -156,7 +170,7 @@ class AutoIngester:
         Returns:
             Resumen de la ingesta automática
         """
-        logger.info("=== Iniciando ingesta automática ===")
+        logger.info("=== Iniciando ingesta automática RECURSIVA ===")
         
         new_docs = self.get_new_documents()
         
@@ -170,26 +184,32 @@ class AutoIngester:
                 "results": []
             }
         
+        logger.info(f"📁 Encontrados {len(new_docs)} documentos nuevos para ingestar")
+        
         results = []
         success_count = 0
         failed_count = 0
+        total_chunks = 0
         
         for doc_path in new_docs:
-            logger.info(f"Ingesting: {doc_path}")
             result = self.ingest_document(doc_path, ingest_pipeline)
             results.append(result)
             
             if result.get("status") == "success":
                 success_count += 1
+                total_chunks += result.get("chunks", 0)
             else:
                 failed_count += 1
         
-        logger.info(f"=== Ingesta automática completada: {success_count} exitosos, {failed_count} fallidos ===")
+        logger.info(f"=== Ingesta automática completada ===")
+        logger.info(f"✅ Exitosos: {success_count} documentos ({total_chunks} chunks totales)")
+        logger.info(f"❌ Fallidos: {failed_count} documentos")
         
         return {
             "status": "success",
             "message": f"Ingesta automática completada",
             "ingested": success_count,
             "failed": failed_count,
+            "total_chunks": total_chunks,
             "results": results
         }

@@ -75,12 +75,14 @@ class ConversationMessage(BaseModel):
 
 class QueryRequest(BaseModel):
     question: str
-    top_k: int = 5
+    top_k: int = 10  # Aumentado para mejor cobertura de múltiples fuentes
     conversation_history: Optional[List[ConversationMessage]] = None
 
 
 class SourceInfo(BaseModel):
-    page: int
+    page: Optional[int] = None  # Puede ser None para archivos de texto/markdown
+    source: str  # Nombre del archivo fuente
+    type: str = "pdf"  # Tipo de documento: pdf, html, text
     text: str
     score: float
 
@@ -129,7 +131,8 @@ def initialize_components():
             llm_client=llm_client
         )
         
-        auto_ingester = AutoIngester(data_dir=data_dir)
+        # AutoIngester busca automáticamente en data/pdf Y data/wiki (recursivo)
+        auto_ingester = AutoIngester()
         
         logger.info("Componentes RAG inicializados correctamente")
 
